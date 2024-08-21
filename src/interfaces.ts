@@ -71,6 +71,10 @@ export interface GetAuthURLOptions {
   state?: string;
 }
 
+export interface GetAuthURLOptionsExtended extends GetAuthURLOptions {
+  login_hint?: string;
+}
+
 export interface AuthkitMiddlewareAuth {
   enabled: boolean;
   unauthenticatedPaths: string[];

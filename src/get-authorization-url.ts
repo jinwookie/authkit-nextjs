@@ -1,7 +1,7 @@
-import { getWorkOS } from './workos.js';
+import { headers } from 'next/headers';
 import { WORKOS_CLIENT_ID, WORKOS_REDIRECT_URI } from './env-variables.js';
 import { GetAuthURLOptions } from './interfaces.js';
-import { headers } from 'next/headers';
+import { getWorkOS } from './workos.js';
 
 async function getAuthorizationUrl(options: GetAuthURLOptions = {}) {
   const headersList = await headers();
