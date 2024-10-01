@@ -18,7 +18,7 @@ const WORKOS_API_KEY = getEnvVariable('WORKOS_API_KEY') ?? '';
 const WORKOS_CLIENT_ID = getEnvVariable('WORKOS_CLIENT_ID') ?? '';
 const WORKOS_COOKIE_PASSWORD = getEnvVariable('WORKOS_COOKIE_PASSWORD') ?? '';
 const WORKOS_REDIRECT_URI = process.env.NEXT_PUBLIC_WORKOS_REDIRECT_URI ?? '';
-const WORKOS_LOGIN_PATH = getOptionalEnvVariable('WORKOS_LOGIN_PATH');
+const WORKOS_LOGIN_PATH = getEnvVariable('WORKOS_LOGIN_PATH');
 
 export {
   WORKOS_API_HOSTNAME,
