@@ -1,5 +1,5 @@
 import { headers } from 'next/headers';
-import { WORKOS_CLIENT_ID, WORKOS_REDIRECT_URI } from './env-variables.js';
+import { WORKOS_CLIENT_ID, WORKOS_LOGIN_PATH, WORKOS_REDIRECT_URI } from './env-variables.js';
 import { GetAuthURLOptions } from './interfaces.js';
 import { getWorkOS } from './workos.js';
 
@@ -22,7 +22,7 @@ async function getAuthorizationUrl(options: GetAuthURLOptions = {}) {
   const finalState =
     internalState && customState ? `${internalState}.${customState}` : internalState || customState || undefined;
 
-  return getWorkOS().userManagement.getAuthorizationUrl({
+  const authUrl = await getWorkOS().userManagement.getAuthorizationUrl({
     provider: 'authkit',
     clientId: WORKOS_CLIENT_ID,
     redirectUri: redirectUri ?? WORKOS_REDIRECT_URI,
@@ -32,6 +32,21 @@ async function getAuthorizationUrl(options: GetAuthURLOptions = {}) {
     loginHint,
     prompt,
   });
+
+  if (WORKOS_LOGIN_PATH) {
+    try {
+      const response = await fetch(authUrl);
+      const url = new URL(response.url);
+      url.host = (await headers()).get('host') ?? url.host;
+      url.protocol = (await headers()).get('x-forwarded-proto') ?? url.protocol;
+      url.pathname = WORKOS_LOGIN_PATH;
+      return url.toString();
+    } catch (error) {
+      console.error('Failed to get authorization URL', error);
+    }
+  }
+
+  return authUrl;
 }
 
 export { getAuthorizationUrl };
