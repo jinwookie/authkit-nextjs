@@ -37,12 +37,13 @@ async function getAuthorizationUrl(options: GetAuthURLOptions = {}) {
     try {
       const response = await fetch(authUrl);
       const url = new URL(response.url);
+
       url.host = (await headers()).get('host') ?? url.host;
       url.protocol = (await headers()).get('x-forwarded-proto') ?? url.protocol;
       url.pathname = WORKOS_LOGIN_PATH;
       return url.toString();
     } catch (error) {
-      console.error('Failed to get authorization URL', error);
+      // ignore
     }
   }
 
